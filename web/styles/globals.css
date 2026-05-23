@@ -1192,6 +1192,12 @@ button { font-family: var(--font-body); cursor: pointer; }
   .burger { display: flex !important; }
 }
 
+/* --- Mobile cart: hide on desktop, show only on mobile --- */
+.nav-cart--mobile { display: none !important; }
+@media (max-width: 860px) {
+  .nav-cart--mobile { display: flex !important; }
+}
+
 /* --- Smooth image loading --- */
 img {
   image-rendering: auto;
