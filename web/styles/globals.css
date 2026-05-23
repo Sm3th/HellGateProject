@@ -1150,3 +1150,56 @@ button { font-family: var(--font-body); cursor: pointer; }
 
 /* --- Focus ring --- */
 :focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 4px; }
+
+/* --- Footer overrides (4-col layout) --- */
+.footer__top {
+  grid-template-columns: 1.2fr 1fr 1fr 1.1fr;
+}
+@media (max-width: 960px) {
+  .footer__top { grid-template-columns: 1fr 1fr; gap: 32px; padding: 48px 0 36px; }
+}
+@media (max-width: 600px) {
+  .footer__top { grid-template-columns: 1fr; }
+}
+.footer__social { flex-wrap: wrap; }
+
+/* --- Checkout grid (form layout) --- */
+@media (max-width: 700px) {
+  div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+}
+
+/* --- Artist card top-bar accent support --- */
+.artist-card { overflow: hidden; }
+
+/* --- Utility: text-green --- */
+.text-green { color: var(--green); }
+
+/* --- Ticket page responsive grid --- */
+@media (max-width: 900px) {
+  .ticket-grid { grid-template-columns: 1fr !important; }
+}
+
+/* --- Nav link active state --- */
+.nav-link--active {
+  color: var(--brand) !important;
+}
+.nav-link--active::after {
+  width: 100% !important;
+}
+
+/* --- Mobile nav --- */
+@media (max-width: 860px) {
+  .burger { display: flex !important; }
+}
+
+/* --- Smooth image loading --- */
+img {
+  image-rendering: auto;
+}
+
+/* --- Section brand alternate --- */
+.section--brand-alt {
+  background: linear-gradient(135deg, rgba(136,0,255,.06) 0%, rgba(255,0,51,.04) 100%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
