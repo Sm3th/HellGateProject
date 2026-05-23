@@ -1,12 +1,33 @@
-node_modules
-.next
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+
+# Environment files (never commit secrets)
 .env
 .env.local
+.env.*.local
+# .env.example files ARE committed (they contain no secrets)
+
+# Editor & OS
 .claude/
 .vscode/
 .idea/
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
-*.log
+
+# Stripe CLI
+.stripe/
+
+# Vercel
+.vercel
