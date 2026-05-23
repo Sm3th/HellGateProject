@@ -3,19 +3,38 @@ import { useState, useCallback, useEffect } from "react";
 
 const CATEGORIES = ["All", "Gate:01", "Backstage", "Crowd"];
 
-const IMAGES = [
-  { src: "/hero.png", alt: "Main stage — Gate:01 opening",       event: "Gate:01",  category: "Gate:01",   span: "tall"   },
-  { src: "/hero.png", alt: "DJ Inferno opening set",              event: "Gate:01",  category: "Gate:01",   span: "normal" },
-  { src: "/hero.png", alt: "Crowd surging at Hellraiser set",     event: "Gate:01",  category: "Crowd",     span: "wide"   },
-  { src: "/hero.png", alt: "Industrial light rig overhead",       event: "Gate:01",  category: "Gate:01",   span: "normal" },
-  { src: "/hero.png", alt: "Dark Pulse behind the decks",         event: "Gate:01",  category: "Backstage", span: "normal" },
-  { src: "/hero.png", alt: "Strobe corridor towards the stage",   event: "Gate:01",  category: "Gate:01",   span: "tall"   },
-  { src: "/hero.png", alt: "Pre-dawn crowd still moving",        event: "Gate:01",  category: "Crowd",     span: "normal" },
-  { src: "/hero.png", alt: "Acid Queen 4 AM set",                event: "Gate:01",  category: "Gate:01",   span: "normal" },
-  { src: "/hero.png", alt: "Backstage handshake",                event: "Gate:01",  category: "Backstage", span: "wide"   },
-  { src: "/hero.png", alt: "Hellraiser headliner moment",        event: "Gate:01",  category: "Gate:01",   span: "normal" },
-  { src: "/hero.png", alt: "Floor packed — 2 AM",                event: "Gate:01",  category: "Crowd",     span: "normal" },
-  { src: "/hero.png", alt: "Sound system close-up",              event: "Gate:01",  category: "Backstage", span: "tall"   },
+const MEDIA = [
+  // ── Triptych: Exilion ──
+  { type: "img", src: "/gallery/1.jpg", alt: "Exilion — I",                    category: "Gate:01",   span: "normal" },
+  { type: "img", src: "/gallery/2.jpg", alt: "Exilion — The Exiled Spirit",    category: "Gate:01",   span: "normal" },
+  { type: "img", src: "/gallery/3.jpg", alt: "Exilion — II",                   category: "Gate:01",   span: "normal" },
+  // ── Triptych: Giveaway ──
+  { type: "img", src: "/gallery/4.jpg", alt: "Giveaway — Location",            category: "Gate:01",   span: "normal" },
+  { type: "img", src: "/gallery/5.jpg", alt: "Giveaway — Crew",                category: "Gate:01",   span: "normal" },
+  { type: "img", src: "/gallery/6.jpg", alt: "Giveaway — Scene",               category: "Gate:01",   span: "normal" },
+  // ── Triptych: We Are Everywhere ──
+  { type: "img", src: "/gallery/7.jpg", alt: "We Are Everywhere",              category: "Gate:01",   span: "normal" },
+  { type: "img", src: "/gallery/8.jpg", alt: "HHG — Graffiti Wall",            category: "Gate:01",   span: "normal" },
+  { type: "img", src: "/gallery/9.jpg", alt: "Join Us",                        category: "Gate:01",   span: "normal" },
+  // ── Portrait / merch series ──
+  { type: "img", src: "/gallery/10.jpg", alt: "Editorial — Gate:01 Fit",       category: "Backstage", span: "normal" },
+  { type: "img", src: "/gallery/11.jpg", alt: "Hellgate Tee — Front",          category: "Backstage", span: "normal" },
+  { type: "img", src: "/gallery/12.jpg", alt: "HHG Crop Top",                  category: "Backstage", span: "normal" },
+  { type: "img", src: "/gallery/13.jpg", alt: "Editorial — HHG Fit",           category: "Backstage", span: "normal" },
+  { type: "img", src: "/gallery/14.jpg", alt: "Hellgate Tee — Back",           category: "Backstage", span: "normal" },
+  { type: "img", src: "/gallery/15.jpg", alt: "HHG Crop — Close",              category: "Backstage", span: "normal" },
+  // ── Triptych: Echt oder Fake ──
+  { type: "img", src: "/gallery/16.jpg", alt: "Crowd — Gate:01",               category: "Crowd",     span: "normal" },
+  { type: "img", src: "/gallery/17.jpg", alt: "Echt oder Fake? — Who Are You?",category: "Gate:01",   span: "normal" },
+  { type: "img", src: "/gallery/18.jpg", alt: "Crowd — Gate:01",               category: "Crowd",     span: "normal" },
+  // ── Other ──
+  { type: "img", src: "/gallery/berceste.jpg",                                   alt: "Berceste — portrait",             category: "Backstage", span: "tall"   },
+  { type: "img", src: "/gallery/SaveClip.App_573792729_17868998679469946_1257856799886885738_n.jpg",  alt: "Berceste live — Gate:01",         category: "Gate:01",   span: "normal" },
+  { type: "img", src: "/gallery/SaveClip.App_586688471_17872439610469946_5088464307786262174_n.jpg",  alt: "Feel Every Beat in Your Veins",   category: "Gate:01",   span: "normal" },
+  { type: "img", src: "/gallery/SaveClip.App_587266559_17872439595469946_8647313477321146666_n.jpg",  alt: "Gate:01 — Atmosphere",            category: "Crowd",     span: "normal" },
+  { type: "img", src: "/gallery/SaveClip.App_587277655_17872439601469946_4470079853758776117_n.jpg",  alt: "Gate:01 — Atmosphere",            category: "Crowd",     span: "normal" },
+  // ── Video ──
+  { type: "video", src: "/gallery/SaveClip.App_AQODQn-MIvxL5FtLG9-mOpd4ggJ0uAdntG2QKKOChuJXOQeU6dbNf1IOTqLdD9J-4cmQR_4bhuqI3cxvbz8JF8Nml5jGpd9gHEEfcGg.mp4", alt: "Gate:01 — Video Clip", category: "Gate:01", span: "wide" },
 ];
 
 export default function Gallery() {
@@ -26,18 +45,37 @@ export default function Gallery() {
   useEffect(() => { setMounted(true); }, []);
 
   const filtered = filter === "All"
-    ? IMAGES
-    : IMAGES.filter((img) => img.category === filter);
+    ? MEDIA
+    : MEDIA.filter((m) => m.category === filter);
 
-  const prev = useCallback(() => setActive((i) => (i - 1 + filtered.length) % filtered.length), [filtered.length]);
-  const next = useCallback(() => setActive((i) => (i + 1) % filtered.length), [filtered.length]);
+  // Navigate only among images (skip videos in prev/next)
+  const imgIndices = filtered.reduce((acc, m, i) => (m.type === "img" ? [...acc, i] : acc), []);
+
+  const prev = useCallback(() => {
+    setActive((cur) => {
+      const pos = imgIndices.indexOf(cur);
+      return imgIndices[(pos - 1 + imgIndices.length) % imgIndices.length];
+    });
+  }, [imgIndices]);
+
+  const next = useCallback(() => {
+    setActive((cur) => {
+      const pos = imgIndices.indexOf(cur);
+      return imgIndices[(pos + 1) % imgIndices.length];
+    });
+  }, [imgIndices]);
 
   const onKey = useCallback((e) => {
     if (active === null) return;
-    if (e.key === "ArrowLeft") prev();
+    if (e.key === "ArrowLeft")  prev();
     if (e.key === "ArrowRight") next();
-    if (e.key === "Escape") setActive(null);
+    if (e.key === "Escape")     setActive(null);
   }, [active, prev, next]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onKey]);
 
   useEffect(() => {
     if (active !== null) document.body.style.overflow = "hidden";
@@ -46,11 +84,13 @@ export default function Gallery() {
   }, [active]);
 
   const counts = {
-    All: IMAGES.length,
-    "Gate:01": IMAGES.filter(i => i.category === "Gate:01").length,
-    Backstage: IMAGES.filter(i => i.category === "Backstage").length,
-    Crowd: IMAGES.filter(i => i.category === "Crowd").length,
+    All:       MEDIA.length,
+    "Gate:01": MEDIA.filter(m => m.category === "Gate:01").length,
+    Backstage: MEDIA.filter(m => m.category === "Backstage").length,
+    Crowd:     MEDIA.filter(m => m.category === "Crowd").length,
   };
+
+  const photoCount = MEDIA.filter(m => m.type === "img").length;
 
   return (
     <>
@@ -65,7 +105,7 @@ export default function Gallery() {
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
           <span className="eyebrow">// Gate:01 Archive</span>
           <h1>Gallery</h1>
-          <p>Captured in the darkness — {IMAGES.length} photographs</p>
+          <p>Captured in the darkness — {photoCount} photographs &amp; {MEDIA.length - photoCount} video</p>
         </div>
       </div>
 
@@ -92,21 +132,30 @@ export default function Gallery() {
         <div className="container">
           {mounted && (
             <div className="gallery-masonry">
-              {filtered.map((img, i) => (
+              {filtered.map((item, i) => (
                 <button
                   key={`${filter}-${i}`}
-                  className={`gallery-cell gallery-cell--${img.span}`}
+                  className={`gallery-cell gallery-cell--${item.span}${item.type === "video" ? " gallery-cell--video" : ""}`}
                   onClick={() => setActive(i)}
-                  onKeyDown={onKey}
-                  aria-label={`Open photo: ${img.alt}`}
+                  aria-label={item.type === "video" ? `Play video: ${item.alt}` : `Open photo: ${item.alt}`}
                 >
-                  <img src={img.src} alt={img.alt} loading="lazy" />
+                  {item.type === "video" ? (
+                    <div className="gallery-cell__video-thumb">
+                      <video src={item.src} muted preload="metadata" />
+                      <div className="gallery-cell__video-play" aria-hidden>
+                        <span className="gallery-cell__play-icon">▶</span>
+                        <span className="gallery-cell__play-label">VIDEO</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <img src={item.src} alt={item.alt} loading="lazy" />
+                  )}
                   <div className="gallery-cell__overlay">
                     <div className="gallery-cell__info">
-                      <span className="gallery-cell__tag">{img.category}</span>
-                      <span className="gallery-cell__caption">{img.alt}</span>
+                      <span className="gallery-cell__tag">{item.category}</span>
+                      <span className="gallery-cell__caption">{item.alt}</span>
                     </div>
-                    <span className="gallery-cell__zoom">⊕</span>
+                    <span className="gallery-cell__zoom">{item.type === "video" ? "▶" : "⊕"}</span>
                   </div>
                 </button>
               ))}
@@ -146,53 +195,69 @@ export default function Gallery() {
       </section>
 
       {/* ═══ LIGHTBOX ═══ */}
-      {active !== null && (
-        <div
-          className="lightbox lightbox--enhanced"
-          onClick={() => setActive(null)}
-          onKeyDown={onKey}
-          tabIndex={0}
-          role="dialog"
-          aria-label="Photo viewer"
-          aria-modal
-        >
-          {/* Image wrapper — stops click propagation */}
-          <div className="lightbox-frame" onClick={(e) => e.stopPropagation()}>
-            <img
-              className="lightbox__img"
-              src={filtered[active].src}
-              alt={filtered[active].alt}
-            />
-            {/* Caption bar */}
-            <div className="lightbox-caption">
-              <div>
-                <p className="lightbox-caption__main">{filtered[active].alt}</p>
-                <p className="lightbox-caption__sub">{filtered[active].event} · {filtered[active].category}</p>
+      {active !== null && filtered[active] && (() => {
+        const item = filtered[active];
+        const isVideo = item.type === "video";
+        return (
+          <div
+            className={`lightbox lightbox--enhanced${isVideo ? " lightbox--video" : ""}`}
+            onClick={() => setActive(null)}
+            role="dialog"
+            aria-label={isVideo ? "Video player" : "Photo viewer"}
+            aria-modal
+          >
+            {isVideo ? (
+              /* ── Video player ── */
+              <div className="lightbox-video-frame" onClick={(e) => e.stopPropagation()}>
+                <video
+                  className="lightbox-video"
+                  src={item.src}
+                  controls
+                  autoPlay
+                  playsInline
+                />
+                <div className="lightbox-caption">
+                  <div>
+                    <p className="lightbox-caption__main">{item.alt}</p>
+                    <p className="lightbox-caption__sub">{item.category} · Video</p>
+                  </div>
+                </div>
               </div>
-              <span className="lightbox-caption__counter">
-                {active + 1} / {filtered.length}
-              </span>
-            </div>
+            ) : (
+              /* ── Image viewer ── */
+              <div className="lightbox-frame" onClick={(e) => e.stopPropagation()}>
+                <img className="lightbox__img" src={item.src} alt={item.alt} />
+                <div className="lightbox-caption">
+                  <div>
+                    <p className="lightbox-caption__main">{item.alt}</p>
+                    <p className="lightbox-caption__sub">{item.category}</p>
+                  </div>
+                  <span className="lightbox-caption__counter">
+                    {imgIndices.indexOf(active) + 1} / {imgIndices.length}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <button className="lightbox__close" onClick={() => setActive(null)} aria-label="Close">✕</button>
+
+            {!isVideo && imgIndices.length > 1 && (
+              <>
+                <button
+                  className="lightbox__nav lightbox__nav--prev"
+                  onClick={(e) => { e.stopPropagation(); prev(); }}
+                  aria-label="Previous photo"
+                >‹</button>
+                <button
+                  className="lightbox__nav lightbox__nav--next"
+                  onClick={(e) => { e.stopPropagation(); next(); }}
+                  aria-label="Next photo"
+                >›</button>
+              </>
+            )}
           </div>
-
-          <button className="lightbox__close" onClick={() => setActive(null)} aria-label="Close">✕</button>
-
-          {filtered.length > 1 && (
-            <>
-              <button
-                className="lightbox__nav lightbox__nav--prev"
-                onClick={(e) => { e.stopPropagation(); prev(); }}
-                aria-label="Previous photo"
-              >‹</button>
-              <button
-                className="lightbox__nav lightbox__nav--next"
-                onClick={(e) => { e.stopPropagation(); next(); }}
-                aria-label="Next photo"
-              >›</button>
-            </>
-          )}
-        </div>
-      )}
+        );
+      })()}
 
       <style jsx>{`
         /* Hero glow bg */
@@ -381,6 +446,43 @@ export default function Gallery() {
           flex-shrink: 0;
         }
 
+        /* Video grid cell */
+        .gallery-cell--video { background: #000; }
+        .gallery-cell__video-thumb {
+          width: 100%; height: 100%;
+          position: relative;
+          overflow: hidden;
+        }
+        .gallery-cell__video-thumb video {
+          width: 100%; height: 100%;
+          object-fit: cover;
+          opacity: .55;
+          pointer-events: none;
+        }
+        .gallery-cell__video-play {
+          position: absolute; inset: 0;
+          display: flex; flex-direction: column;
+          align-items: center; justify-content: center;
+          gap: 8px;
+          pointer-events: none;
+        }
+        .gallery-cell__play-icon {
+          font-size: 36px;
+          color: #fff;
+          text-shadow: 0 0 24px rgba(255,0,51,.7);
+          line-height: 1;
+        }
+        .gallery-cell__play-label {
+          font-size: 10px; font-weight: 800;
+          letter-spacing: 4px; text-transform: uppercase;
+          color: var(--brand);
+        }
+        .gallery-cell--video:hover .gallery-cell__video-thumb video {
+          opacity: .75;
+          transform: scale(1.03);
+          transition: opacity .4s, transform .4s;
+        }
+
         /* Enhanced lightbox */
         .lightbox--enhanced {
           cursor: default;
@@ -429,6 +531,25 @@ export default function Gallery() {
           color: rgba(255,255,255,.4);
           letter-spacing: 2px;
           flex-shrink: 0;
+        }
+
+        /* Video lightbox */
+        .lightbox--video { align-items: center; }
+        .lightbox-video-frame {
+          position: relative;
+          max-width: min(92vw, 1100px);
+          width: 100%;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 0 80px rgba(0,0,0,.9);
+          background: #000;
+        }
+        .lightbox-video {
+          display: block;
+          width: 100%;
+          max-height: 80vh;
+          object-fit: contain;
+          border-radius: 12px 12px 0 0;
         }
 
         /* Responsive */

@@ -31,3 +31,11 @@ pnpm-debug.log*
 
 # Vercel
 .vercel
+
+# Local media assets (photos/videos — too large for git)
+web/public/gallery/*.jpg
+web/public/gallery/*.jpeg
+web/public/gallery/*.png
+web/public/gallery/*.mp4
+web/public/gallery/*.mov
+web/public/gallery/*.webp
